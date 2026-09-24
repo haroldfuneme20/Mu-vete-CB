@@ -1,0 +1,17 @@
+.git/
+.venv/
+**/node_modules/
+**/__pycache__/
+**/.pytest_cache/
+frontend/dist/
+frontend/public/offline/
+data/build/
+coverage/
+*.log*
+.env*
+Dockerfile*
+.dockerignore
+.claude/
+.specify/
+specs/
+documentacion/

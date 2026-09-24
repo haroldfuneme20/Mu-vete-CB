@@ -1,0 +1,21 @@
+{
+  "ci": {
+    "collect": {
+      "staticDistDir": "./dist",
+      "isSinglePageApplication": true,
+      "url": [
+        "http://localhost/",
+        "http://localhost/mapa",
+        "http://localhost/reportar",
+        "http://localhost/estado",
+        "http://localhost/resultados"
+      ],
+      "numberOfRuns": 1,
+      "settings": { "onlyCategories": ["accessibility"] }
+    },
+    "assert": {
+      "assertions": { "categories:accessibility": ["error", { "minScore": 0.9 }] }
+    },
+    "upload": { "target": "filesystem", "outputDir": "./.lighthouseci" }
+  }
+}

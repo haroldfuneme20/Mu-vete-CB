@@ -1,0 +1,12 @@
+# Tarifas en pesos colombianos. POR CONFIRMAR P-06: valores de referencia, no oficiales.
+tm_troncal: 3200       # POR CONFIRMAR P-06
+transmicable: 3200     # POR CONFIRMAR P-06
+sitp_zonal: 3200       # POR CONFIRMAR P-06
+provisional: 3200      # POR CONFIRMAR P-06
+integrated_transfer:
+  # Tras pagar un servicio integrado (TM, TransMiCable, SITP), los siguientes transbordos
+  # integrados dentro de la ventana pagan `extra`.
+  window_min: 110      # POR CONFIRMAR P-06
+  extra: 0             # POR CONFIRMAR P-06
+community:
+  default: 2500        # tarifa declarada por defecto para rutas comunitarias simuladas

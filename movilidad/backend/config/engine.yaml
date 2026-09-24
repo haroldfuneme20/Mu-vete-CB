@@ -1,0 +1,38 @@
+# Parámetros del motor de rutas (constitución II: viven en configuración, no en el código).
+# Valores iniciales de spec.md → Assumptions; ajustables (P-07, P-12).
+walk:
+  max_access_m: 600
+  speed_kmh: 4.5
+  max_transfer_m: 250
+transfers:
+  max: 2
+  penalty_s: 300
+wait:
+  headway_factor: 0.5
+service:
+  peak_windows: ["06:00-09:00", "16:00-19:30"]
+candidates:
+  k_search: 10
+  k_return: 3
+reports:
+  validity_h: 2
+  radius_m: 100
+  partial:            # 1 reporte
+    blockage: { add_s: 900, reliability: -0.3 }
+    delay: { add_s: 600 }
+    risk: { reliability: -0.3 }
+    route_change: { availability: -0.3 }
+    other: {}
+  confirmed:          # >= 2 reportes de anon_id distintos
+    blockage: { invalidate: true }
+    multiplier: 2
+  caps: { max_add_s: 1800, min_score_component: 0.1 }
+availability:
+  best_headway_min: 5
+  worst_headway_min: 60
+weights:              # tiempo, disponibilidad, confiabilidad, costo
+  balanced: [0.40, 0.25, 0.20, 0.15]
+  fast: [0.55, 0.20, 0.15, 0.10]
+  cheap: [0.25, 0.20, 0.15, 0.40]
+  reliable: [0.25, 0.25, 0.40, 0.10]
+tie_break: [time_asc, id_asc]

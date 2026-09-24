@@ -1,0 +1,15 @@
+# T106: mantiene despierto el servicio gratuito de Render durante el evento.
+# Activar solo durante el hackathon (variable de repositorio KEEPALIVE=on).
+name: keepalive
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    if: ${{ vars.KEEPALIVE == 'on' && vars.PUBLIC_URL != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl -fsS "${{ vars.PUBLIC_URL }}/api/health" || true

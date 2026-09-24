@@ -1,0 +1,5 @@
+# El ETL usa json/csv de la librería estándar + Shapely. pyproj solo se necesita si algún
+# archivo real llega en un CRS distinto de WGS84 (EPSG:4326).
+shapely>=2.0
+pyyaml>=6.0
+pyproj>=3.6

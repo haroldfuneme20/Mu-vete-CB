@@ -1,0 +1,20 @@
+[project]
+name = "muevete-cb"
+version = "0.1.0"
+requires-python = ">=3.12"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["frontend", "data"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI usa File(), Form() y Query() como valores por defecto por diseño
+extend-immutable-calls = ["fastapi.File", "fastapi.Form", "fastapi.Query"]
+
+[tool.pytest.ini_options]
+testpaths = ["backend/tests", "agent/tests"]
+pythonpath = ["."]

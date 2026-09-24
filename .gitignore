@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+frontend/dist/
+coverage/
+*.log
+
+# Datos generados
+data/build/
+data/raw/mock/
+frontend/public/offline/
+
+# Entorno y secretos
+.env
+.env.*
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/

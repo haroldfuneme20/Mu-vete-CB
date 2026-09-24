@@ -1,0 +1,28 @@
+html {
+  font-size: 100%; /* respeta el tamaño de texto del sistema */
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 2000;
+  background: #0b3d63;
+  color: #fff;
+  padding: 12px 16px;
+  font-size: 1rem;
+}
+
+.skip-link:focus {
+  left: 8px;
+  top: 8px;
+}
+
+:focus-visible {
+  outline: 3px solid #1b6e35;
+  outline-offset: 2px;
+}
+
+.leaflet-container {
+  font-size: 1rem;
+}

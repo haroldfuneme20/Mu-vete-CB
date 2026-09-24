@@ -1,0 +1,59 @@
+# T037: push a main → imagen en GHCR → deploy hook de Render → verificación de /api/health.
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/muevete-cb
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: GTFS desde Release (si no está en el repo; research R-03)
+        if: ${{ vars.GTFS_RELEASE_URL != '' }}
+        run: |
+          if [ ! -f data/raw/gtfs_bogota.zip ]; then
+            curl -fsSL "${{ vars.GTFS_RELEASE_URL }}" -o data/raw/gtfs_bogota.zip
+          fi
+      - name: Modo de datos
+        id: mode
+        run: |
+          if [ -f data/raw/gtfs_bogota.zip ]; then echo "mode=real" >> "$GITHUB_OUTPUT"; else echo "mode=mock" >> "$GITHUB_OUTPUT"; fi
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build y push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          build-args: DATA_MODE=${{ steps.mode.outputs.mode }}
+          tags: |
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ github.sha }}
+      - name: Disparar deploy en Render
+        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+      - name: Verificar /api/health
+        if: ${{ vars.PUBLIC_URL != '' }}
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS "${{ vars.PUBLIC_URL }}/api/health" | grep -q '"status":"ok"'; then
+              echo "Servicio OK"; exit 0
+            fi
+            sleep 20
+          done
+          echo "El servicio no respondió a tiempo"; exit 1

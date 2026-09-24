@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Muévete CB">
+  <rect width="64" height="64" rx="14" fill="#0b3d63"/>
+  <path d="M32 10c-8.8 0-16 6.9-16 15.5C16 37 32 54 32 54s16-17 16-28.5C48 16.9 40.8 10 32 10z" fill="#ffffff"/>
+  <path d="M24 32l6-12 4 8 4-4 4 8" fill="none" stroke="#1b7f3b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

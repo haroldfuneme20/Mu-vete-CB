@@ -1,0 +1,6 @@
+[
+  {"id": "lm_av_jimenez", "name": "Av. Jiménez", "aliases": ["Avenida Jiménez", "Jiménez", "Centro", "el centro"],
+   "lat": 4.6018, "lng": -74.0762, "localidad": "Santa Fe"},
+  {"id": "lm_portal_tunal", "name": "Portal Tunal", "aliases": ["Portal del Tunal", "el Tunal"],
+   "lat": 4.5768, "lng": -74.1303, "localidad": "Tunjuelito"}
+]

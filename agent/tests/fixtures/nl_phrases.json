@@ -1,0 +1,22 @@
+[
+  {"q": "Necesito ir del barrio Paraíso al Portal Tunal, lo más confiable", "o": "paraiso", "d": "portal tunal", "p": "reliable"},
+  {"q": "quiero ir de Mirador del Paraíso a la Av. Jiménez rápido", "o": "mirador del paraiso", "d": "av jimenez", "p": "fast"},
+  {"q": "cómo llego al centro desde Juan Pablo II", "o": "juan pablo ii", "d": "centro", "p": null},
+  {"q": "desde Lucero hasta Portal Tunal lo más barato", "o": "lucero", "d": "portal tunal", "p": "cheap"},
+  {"q": "voy de Manitas a Las Cruces", "o": "manitas", "d": "las cruces", "p": null},
+  {"q": "quiero ir al Portal Tunal desde Vista Hermosa", "o": "vista hermosa", "d": "portal tunal", "p": null},
+  {"q": "de Candelaria La Nueva a Restrepo, lo más seguro por favor", "o": "candelaria la nueva", "d": "restrepo", "p": "reliable"},
+  {"q": "necesito llegar a la avenida Jiménez desde Paraíso a las 7", "o": "paraiso", "d": "av jimenez", "p": null},
+  {"q": "ruta más económica del Tunal a Santa Lucía", "o": "tunal", "d": "santa lucia", "p": "cheap"},
+  {"q": "Voy a ir de Mirador Alto al centro", "o": "mirador alto", "d": "centro", "p": null},
+  {"q": "quiero moverme de Juan Pablo II a Portal Tunal urgente", "o": "juan pablo ii", "d": "portal tunal", "p": "fast"},
+  {"q": "desde el barrio Lucero hacia Las Cruces", "o": "lucero", "d": "las cruces", "p": null},
+  {"q": "¿Cómo voy de Paraíso a Restrepo?", "o": "paraiso", "d": "restrepo", "p": null},
+  {"q": "regresar a Paraíso desde la Av. Jiménez, lo más rápido", "o": "av jimenez", "d": "paraiso", "p": "fast"},
+  {"q": "de Manitas hasta el Tunal lo más barato posible", "o": "manitas", "d": "tunal", "p": "cheap"},
+  {"q": "necesito ir de Vista Hermosa a Santa Lucía mañana", "o": "vista hermosa", "d": "santa lucia", "p": null},
+  {"q": "llegar al Portal Tunal desde Candelaria La Nueva con seguridad", "o": "candelaria la nueva", "d": "portal tunal", "p": "reliable"},
+  {"q": "ir de Mirador del Paraíso a Juan Pablo II", "o": "mirador del paraiso", "d": "juan pablo ii", "p": null},
+  {"q": "desde Restrepo a Paraíso, que sea barato", "o": "restrepo", "d": "paraiso", "p": "cheap"},
+  {"q": "quiero volver a Lucero desde Las Cruces", "o": "las cruces", "d": "lucero", "p": null}
+]

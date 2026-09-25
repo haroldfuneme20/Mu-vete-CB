@@ -18,10 +18,10 @@ export default defineConfig({
         runtimeCaching: [
           {
             // teselas OSM ya vistas: caché limitada, sin descarga masiva (política de uso de OSM)
-            urlPattern: /^https:\/\/[abc]?\.?tile\.openstreetmap\.org\/.*/,
+            urlPattern: /^https:\/\/tile\.openstreetmap\.org\/.*/,
             handler: "CacheFirst",
             options: {
-              cacheName: "osm-tiles",
+              cacheName: "basemap-tiles",
               expiration: { maxEntries: 300, maxAgeSeconds: 7 * 24 * 3600 },
               cacheableResponse: { statuses: [0, 200] },
             },

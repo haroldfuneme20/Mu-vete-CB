@@ -36,7 +36,7 @@ Arquitectura (agente/seguridad/deploy).
 - [X] T005 [P] Crear `backend/etl/requirements.txt` (pandas, pyogrio, shapely>=2, pyproj, pyyaml)
 - [X] T006 [P] Inicializar el frontend con Vite + React + TypeScript en `frontend/` e instalar `@mui/material @emotion/react @emotion/styled react-router-dom leaflet react-leaflet idb vite-plugin-pwa` y dev `vitest eslint eslint-plugin-jsx-a11y @lhci/cli` en `frontend/package.json`
 - [X] T007 [P] Configurar ESLint con `jsx-a11y` (recomendado) en `frontend/eslint.config.js`
-- [ ] T008 [P] Crear `data/raw/README.md` con la lista de archivos esperados (BarriosCatastrales, trazado troncal, rutas provisionales, paraderos zonales SITP, estaciones TM, malla vial integrada, GTFS zip), nombre de archivo, atributos requeridos y CRS de cada uno (pendientes P-03/P-04) y colocar los archivos reales — ⏸ `data/raw/README.md` listo; archivos reales pendientes (se usan datos MOCK de `backend/etl/mock_raw.py`)
+- [X] T008 [P] Crear `data/raw/README.md` con la lista de archivos esperados (BarriosCatastrales, trazado troncal, rutas provisionales, paraderos zonales SITP, estaciones TM, malla vial integrada, GTFS zip), nombre de archivo, atributos requeridos y CRS de cada uno (pendientes P-03/P-04) y colocar los archivos reales — ✔ 2026-09-24: 9 GeoJSON + GTFS_20260818.zip revisados y mapeados en `sources.yaml` (ver `data/raw/README.md`)
 - [X] T009 [P] Copiar los diagramas de `documentacion/` a `docs/architecture/` y crear `README.md` raíz con descripción, estructura y enlaces a `specs/001-muevete-cb-mvp/`
 
 ---
@@ -96,7 +96,7 @@ Arquitectura (agente/seguridad/deploy).
 - [X] T036 [P] Crear `.github/workflows/ci.yml`: en PR a `dev`/`main` → checkout con `lfs: true` (+ descarga del GTFS desde el asset del Release si no está en LFS, research R-03), `ruff check`, `pytest`, `npm ci && npm run lint && npm test && npm run build`
 - [X] T037 Crear `.github/workflows/deploy.yml`: en push a `main` → checkout con `lfs: true` (+ descarga del GTFS desde el asset del Release si aplica), build de la imagen, push a GHCR (`ghcr.io/<org>/muevete-cb`), `curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}` y verificación de `/api/health` con reintentos; crear el Web Service en Render apuntando a la imagen de GHCR — ✔ workflow listo; crear el Web Service en Render y los secretos según `docs/deploy/render.md`
 - [X] T038 Crear `backend/tests/conftest.py` con fixture de **red de juguete**: base SQLite temporal creada con `backend/etl/schema.sql` con ~12 paradas, 4 patrones (1 transmicable, 1 troncal, 1 zonal, 1 comunitario `demo_simulated`), footpaths y segmentos; y `TestClient` apuntando a ella
-- [ ] T038b Con la base real de T022, ejecutar `docker run -m 512m` y medir RSS en reposo y tiempo de arranque; registrar en `docs/architecture/memory.md`. Si RSS > 300 MB en reposo, activar el plan B (`docs/deploy/hf-spaces.md`) antes de US1 (P-05) — ⏸ línea base con datos MOCK: 92 MB RSS, arranque 9 s (`docs/architecture/memory.md`); falta medir con datos reales en `docker run -m 512m`
+- [ ] T038b Con la base real de T022, ejecutar `docker run -m 512m` y medir RSS en reposo y tiempo de arranque; registrar en `docs/architecture/memory.md`. Si RSS > 300 MB en reposo, activar el plan B (`docs/deploy/hf-spaces.md`) antes de US1 (P-05) — ⏸ datos reales medidos en proceso local: 120 MB en reposo, 127 MB pico, consulta ~2 s (`docs/architecture/memory.md`); falta confirmar dentro del contenedor (Docker Desktop apagado)
 
 **Checkpoint (Gate 1)**: `docker run -m 512m` arranca, RSS medido y dentro del presupuesto, `/api/health` = ok, la PWA abre en un teléfono desde la URL de Render.
 
@@ -275,7 +275,7 @@ Arquitectura (agente/seguridad/deploy).
 - [ ] T108 Re-medir memoria y arranque con `docker run -m 512m` durante los escenarios A–F con carga (pico ≤ 450 MB) y actualizar `docs/architecture/memory.md`; si se supera, seguir `docs/deploy/hf-spaces.md` — ⏸ requiere datos reales y carga en Render
 - [X] T109 [P] Documentar el despliegue en `docs/deploy/render.md` (servicio, imagen GHCR, variables, secreto `RENDER_DEPLOY_HOOK`) y el respaldo en `docs/deploy/hf-spaces.md`
 - [X] T110 [P] Completar `README.md` con prerrequisitos, ETL, ejecución local, pruebas y despliegue (enlazando `specs/001-muevete-cb-mvp/quickstart.md`)
-- [ ] T111 [P] Confirmar tarifas vigentes y regla de transbordo en `backend/config/fares.yaml` (P-06) — ⏸ tarifas marcadas POR CONFIRMAR en `fares.yaml`
+- [ ] T111 [P] Confirmar tarifas vigentes y regla de transbordo en `backend/config/fares.yaml` (P-06) — ⏸ tarifa 3.550 COP y ventana de 125 min tomadas del GTFS (fare_attributes); falta confirmar SITP zonal y valor del transbordo
 - [X] T112 [P] Redactar indicadores de impacto sin inventar resultados en `docs/pitch/indicators.md` (P-10) y guion de demo de 14 pasos en `docs/pitch/demo-script.md`
 - [ ] T113 Ejecutar la validación manual de `specs/001-muevete-cb-mvp/quickstart.md` §6 (A–F, NL, demo completa) en 2 Android + 1 iPhone y registrar evidencia en `docs/pitch/validation.md` — ⏸ validación manual en teléfonos pendiente
 - [ ] T114 Generar el QR de la URL de Render en `docs/pitch/qr.png`, activar `keepalive.yml`, congelar código y etiquetar `v1.0.0-demo` en `main` — ⏸ pendiente URL de Render para el QR y congelamiento

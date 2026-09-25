@@ -1,5 +1,5 @@
-// Mapa interactivo (T100–T102): capas base offline, ruta recomendada e incidentes activos.
-import { Alert, Button, Stack, Typography } from "@mui/material";
+// Mapa interactivo (T100–T102): territorio con capas discretas, o solo la ruta elegida.
+import { Alert, Button, Stack, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { LayerToggle, type LayerKey } from "../components/LayerToggle";
@@ -10,23 +10,32 @@ import { useApp } from "../state/AppState";
 
 export function MapPage() {
   const { rec, online } = useApp();
+  const [view, setView] = useState<"route" | "territory">(rec ? "route" : "territory");
   const [layers, setLayers] = useState<Record<LayerKey, boolean>>({
-    barrios: true, roads: true, trunk: true, community: true, stops: true, incidents: true,
+    barrios: true, roads: false, trunk: true, community: true, stops: true, incidents: true,
   });
   const [incidents, setIncidents] = useState<Incident[]>([]);
   useEffect(() => {
     if (!online) return;
     api.reports().then((r) => setIncidents(r.items as unknown as Incident[])).catch(() => undefined);
   }, [online]);
+  const showRoute = view === "route" && !!rec;
 
   return (
     <Stack spacing={2}>
-      <Typography variant="h1">Mapa del territorio</Typography>
+      <Typography variant="h1">Mapa</Typography>
       {!online && <Alert severity="warning">Sin conexión: se muestran los datos guardados, sin fondo de mapa.</Alert>}
-      <MapView label="Mapa de Ciudad Bolívar con rutas e incidentes" layers={layers}
-        recommended={rec?.recommended} alternatives={rec?.alternatives ?? []} incidents={incidents} height={420} />
-      <LayerToggle value={layers} onChange={setLayers} />
-      <Legend />
+      {rec && (
+        <ToggleButtonGroup exclusive fullWidth color="primary" value={view} aria-label="Qué mostrar en el mapa"
+          onChange={(_, v) => v && setView(v)}>
+          <ToggleButton value="route">Mi ruta</ToggleButton>
+          <ToggleButton value="territory">Territorio</ToggleButton>
+        </ToggleButtonGroup>
+      )}
+      <MapView label={showRoute ? "Mapa de la ruta recomendada" : "Mapa de Ciudad Bolívar con estaciones e incidentes"}
+        route={showRoute ? rec!.recommended : null} layers={layers} incidents={incidents} height={440} />
+      {!showRoute && <LayerToggle value={layers} onChange={setLayers} />}
+      <Legend route={showRoute ? rec!.recommended : null} />
       <Typography variant="body2">
         {incidents.length === 0 ? "No hay incidentes activos." : `${incidents.length} incidente(s) activo(s) en el mapa.`}
       </Typography>

@@ -16,6 +16,8 @@ coverage/
 # Datos generados
 data/build/
 data/raw/mock/
+# GTFS (> 100 MB): se publica como asset de un Release y se descarga en el build
+data/raw/*.zip
 frontend/public/offline/
 
 # Entorno y secretos

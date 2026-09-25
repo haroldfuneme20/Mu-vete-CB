@@ -1,7 +1,13 @@
 <!--
 Sync Impact Report
 ==================
-Version change: 2.2.1 → 2.2.2
+Version change: 2.2.2 → 2.3.0
+Motivo del bump (MINOR): revisión de los datos reales. Se precisa el principio VII: el GTFS de
+toda Bogotá sigue sin recorte, pero las capas GeoJSON auxiliares pueden venir recortadas a Ciudad
+Bolívar y vecinos. Se añaden reglas: cables proyectados del POT excluidos, rutas provisionales
+solo en mapa, GTFS vía asset de Release (sin Git LFS). No se elimina ningún principio.
+
+Cambio anterior, 2.2.1 → 2.2.2
 Motivo del bump (PATCH): se alinean las rutas y nombres de los datos derivados y semilla con el
 diseño del plan (data/seed, data/build/muevete.db, paquete offline por niveles; POI → landmarks).
 No cambia ningún principio. Origen: /speckit-analyze hallazgos D3 e I6.
@@ -41,6 +47,8 @@ Historial:
     en GitHub Secrets.
   - 2.2.1 (2026-09-24): hosting confirmado en Render; respaldo en Hugging Face Spaces.
   - 2.2.2 (2026-09-24): rutas de datos derivados/semilla alineadas con el plan.
+  - 2.3.0 (2026-09-24): datos reales — recorte de capas auxiliares aceptado, cables POT
+    excluidos, provisionales solo mapa, GTFS por Release.
 
 Principios definidos:
   - [PRINCIPLE_1_NAME] → I. La Demo Manda (alcance mínimo y disciplinado)
@@ -209,9 +217,11 @@ para cada dato; la incertidumbre es una característica explícita del producto.
 
 ### VII. Ciudad Bolívar Conectada con Toda Bogotá, Mobile-First
 
-- Los datos formales NO se recortan: el sistema usa la data completa de Bogotá (troncales,
-  rutas provisionales, paraderos SITP, estaciones, malla vial y GTFS), porque los viajes reales
-  salen de Ciudad Bolívar hacia otras localidades.
+- El motor MUST usar el GTFS completo de Bogotá (sin recorte), porque los viajes reales salen
+  de Ciudad Bolívar hacia otras localidades. Las capas GeoJSON auxiliares (sectores, paraderos,
+  estaciones, troncales, provisionales, malla vial) MAY venir recortadas a Ciudad Bolívar y sus
+  localidades vecinas; los destinos fuera de ese recorte se resuelven con las estaciones y
+  paraderos del GTFS y con hitos (`landmarks.json`).
 - Todo viaje MUST tener al menos un extremo (origen o destino) en Ciudad Bolívar, identificado
   en `BarriosCatastrales` con `Localidad = Ciudad Bolívar`; el otro extremo puede estar en
   cualquier localidad de Bogotá. Así se cubren tanto la ida como el regreso a casa.
@@ -305,19 +315,24 @@ demostrable más allá de "chatbot con mapa".
 |---|---|---|
 | `BarriosCatastrales` (atributo `Localidad`) | Nombrar barrios origen/destino en toda Bogotá y validar que un extremo esté en Ciudad Bolívar | `territorial` |
 | Trazado troncal TransMilenio | Geometría de rutas formales troncales | `institutional` |
-| Rutas provisionales TransMilenio | Rutas formales temporales / cambios de servicio | `institutional` |
+| Rutas provisionales SITP | Solo mapa (no están en el GTFS); son oficiales, no informales | `institutional` |
 | Paraderos zonales SITP | Paraderos (stops) que se articulan con TransMilenio | `institutional` |
 | Estaciones TransMilenio | Estaciones y puntos de transbordo | `institutional` |
 | Malla vial integrada | Vías y segmentos para asociar reportes e incidentes | `institutional` |
-| GTFS Bogotá | Rutas, paradas, frecuencias y horarios formales | `institutional` |
+| GTFS Bogotá | Rutas, paradas, frecuencias, horarios y tarifa formales | `institutional` |
 | Levantamiento del equipo | Rutas comunitarias/informales | `community` / `demo_simulated` |
+
+- Los cables proyectados del POT (p. ej. `CableAereo_CB.geojson`) MUST NOT usarse en rutas ni
+  en el mapa: no son servicios operativos y presentarlos confundiría planeación con oferta real.
+- El GTFS (> 100 MB) no se versiona en git: se publica como asset de un Release de GitHub y el
+  build lo descarga (`GTFS_URL` / `GTFS_RELEASE_URL`).
 
 - Los archivos originales se guardan sin modificar en `data/raw/` y los datos semilla en
   `data/seed/`. Los derivados (la base `data/build/muevete.db` y el paquete offline) los genera
   un script reproducible (no edición manual).
-- Las capas NO se recortan geográficamente: el backend carga la cobertura completa de Bogotá.
-  Solo se generan versiones simplificadas (menos vértices, menos atributos) para el paquete
-  offline por niveles del principio III.
+- El GTFS se carga completo; las capas GeoJSON se usan con la cobertura con que llegan (recorte
+  de Ciudad Bolívar y vecinos aceptado en v2.3.0). Para el paquete offline solo se generan
+  versiones simplificadas (menos vértices, menos atributos) por niveles del principio III.
 - El GTFS completo se carga en el backend; de él salen `frequency_min`, `schedule`, tiempos
   estimados y los puntos de transbordo de las rutas formales.
 - Por el volumen de la data (GTFS y malla vial de toda la ciudad), el preprocesamiento MUST
@@ -364,4 +379,4 @@ demostrable más allá de "chatbot con mapa".
   MINOR = principio o sección nuevos o ampliados; PATCH = aclaraciones y redacción.
 - **Revisión de cumplimiento**: en cada gate y en cada checkpoint de 10 minutos.
 
-**Version**: 2.2.2 | **Ratified**: 2026-09-24 | **Last Amended**: 2026-09-24
+**Version**: 2.3.0 | **Ratified**: 2026-09-24 | **Last Amended**: 2026-09-24

@@ -6,8 +6,8 @@ import type { Alternative } from "../types";
 import { SourceBadge } from "./SourceBadge";
 
 const MODE: Record<string, string> = {
-  troncal: "TransMilenio", provisional: "Provisional", zonal: "SITP", transmicable: "TransMiCable",
-  community: "Comunitaria",
+  troncal: "TransMilenio", provisional: "Provisional", zonal: "SITP", alimentador: "Alimentador",
+  transmicable: "TransMiCable", community: "Comunitaria",
 };
 
 export function AlternativeCard({ alt, recommended }: { alt: Alternative; recommended?: boolean }) {

@@ -1,52 +1,52 @@
 {
   "type": "FeatureCollection",
-  "_comment": "Rutas comunitarias SIMULADAS para la demo (clarificación Q2). Trazadas sobre puntos de paradas mock/reales; source_kind = demo_simulated. Reemplazar coordenadas por paradas reales cuando llegue la data (P-02a).",
+  "_comment": "Rutas comunitarias SIMULADAS para la demo (clarificación Q2), trazadas sobre paraderos reales del GTFS TransMilenio (feed 2026-08-18) y centroides de sectores catastrales. source_kind = demo_simulated: no son rutas levantadas en campo.",
   "features": [
     {
       "type": "Feature",
       "properties": {
-        "id": "C1", "name": "Comunitaria Mirador Alto – Lucero – Portal Tunal (simulada)",
+        "id": "C1", "name": "Comunitaria Quiba – Lucero – Juan Pablo II (simulada)",
         "fare": 2500, "headway_min": 20, "service_start": "05:00", "service_end": "21:00",
-        "speed_kmh": 16, "reliability": 0.6, "confidence": 0.55, "last_updated": "2026-09-20",
+        "speed_kmh": 14, "reliability": 0.6, "confidence": 0.55, "last_updated": "2026-09-20",
         "source_kind": "demo_simulated",
         "stops": [
-          {"name": "Mirador Alto - Kr 27", "lat": 4.5470, "lng": -74.1600},
-          {"name": "Paraíso Alto (punto comunitario)", "lat": 4.5520, "lng": -74.1540},
-          {"name": "Lucero - Av. Boyacá", "lat": 4.5620, "lng": -74.1360},
-          {"name": "Portal Tunal - Zonal", "lat": 4.5760, "lng": -74.1295}
+          {"name": "Quiba I (punto comunitario)", "lat": 4.54132, "lng": -74.14088},
+          {"name": "Br. Lucero Sur Bajo", "lat": 4.54911, "lng": -74.14177},
+          {"name": "Br. Juan Pablo II", "lat": 4.55461, "lng": -74.14707}
         ]
       },
-      "geometry": {"type": "LineString", "coordinates": [[-74.1600, 4.5470], [-74.1540, 4.5520], [-74.1360, 4.5620], [-74.1295, 4.5760]]}
+      "geometry": {"type": "LineString", "coordinates": [[-74.14088, 4.54132], [-74.14177, 4.54911], [-74.14707, 4.55461]]}
     },
     {
       "type": "Feature",
       "properties": {
-        "id": "C2", "name": "Comunitaria Paraíso – Juan Pablo II (simulada)",
+        "id": "C2", "name": "Comunitaria El Paraíso – Lucero Medio – Lucero del Sur (simulada)",
         "fare": 2000, "headway_min": 15, "service_start": "05:00", "service_end": "20:30",
-        "speed_kmh": 14, "reliability": 0.6, "confidence": 0.5, "last_updated": "2026-09-20",
+        "speed_kmh": 13, "reliability": 0.6, "confidence": 0.5, "last_updated": "2026-09-20",
         "source_kind": "demo_simulated",
         "stops": [
-          {"name": "Paraíso - Cl 71 Sur", "lat": 4.5535, "lng": -74.1575},
-          {"name": "Manitas - Cl 70", "lat": 4.5605, "lng": -74.1490},
-          {"name": "Juan Pablo II - Kr 18", "lat": 4.5685, "lng": -74.1410}
+          {"name": "Br. El Paraíso", "lat": 4.54913, "lng": -74.16411},
+          {"name": "Mirador del Paraíso (punto comunitario)", "lat": 4.54990, "lng": -74.15870},
+          {"name": "Br. Lucero Medio", "lat": 4.55138, "lng": -74.14525},
+          {"name": "Br. Lucero del Sur", "lat": 4.55467, "lng": -74.13776}
         ]
       },
-      "geometry": {"type": "LineString", "coordinates": [[-74.1575, 4.5535], [-74.1490, 4.5605], [-74.1410, 4.5685]]}
+      "geometry": {"type": "LineString", "coordinates": [[-74.16411, 4.54913], [-74.1587, 4.5499], [-74.14525, 4.55138], [-74.13776, 4.55467]]}
     },
     {
       "type": "Feature",
       "properties": {
-        "id": "C3", "name": "Comunitaria Vista Hermosa – Candelaria La Nueva (simulada)",
-        "fare": 2000, "headway_min": 25, "service_start": "05:30", "service_end": "20:00",
-        "speed_kmh": 15, "reliability": 0.65, "confidence": 0.6, "last_updated": "2026-09-20",
+        "id": "C3", "name": "Comunitaria Sierra Morena – Parque El Tunal (simulada)",
+        "fare": 2500, "headway_min": 25, "service_start": "05:30", "service_end": "20:00",
+        "speed_kmh": 16, "reliability": 0.65, "confidence": 0.6, "last_updated": "2026-09-20",
         "source_kind": "demo_simulated",
         "stops": [
-          {"name": "Vista Hermosa - Kr 18", "lat": 4.5440, "lng": -74.1430},
-          {"name": "Candelaria - Cl 64 Sur", "lat": 4.5520, "lng": -74.1420},
-          {"name": "Av. Villavicencio - Cl 59 Sur", "lat": 4.5700, "lng": -74.1300}
+          {"name": "Sierra Morena (punto comunitario)", "lat": 4.57650, "lng": -74.17011},
+          {"name": "Sierra Morena II (punto comunitario)", "lat": 4.57629, "lng": -74.16736},
+          {"name": "Pq. El Tunal", "lat": 4.57189, "lng": -74.13899}
         ]
       },
-      "geometry": {"type": "LineString", "coordinates": [[-74.1430, 4.5440], [-74.1420, 4.5520], [-74.1300, 4.5700]]}
+      "geometry": {"type": "LineString", "coordinates": [[-74.17011, 4.5765], [-74.16736, 4.57629], [-74.13899, 4.57189]]}
     }
   ]
 }

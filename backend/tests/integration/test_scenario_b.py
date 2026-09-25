@@ -25,8 +25,8 @@ def _rides(d):
 def _block_point(d):
     """Punto medio del primer tramo del primer viaje de la ruta recomendada."""
     leg = next(x for x in d["recommended"]["legs"] if x["mode"] != "walk")
-    (x1, y1), (x2, y2) = leg["geometry"]["coordinates"][:2]
-    return {"lat": (y1 + y2) / 2, "lng": (x1 + x2) / 2}
+    a, b = leg["stop_points"][:2]
+    return {"lat": (a["lat"] + b["lat"]) / 2, "lng": (a["lng"] + b["lng"]) / 2}
 
 
 def _report(client, loc):

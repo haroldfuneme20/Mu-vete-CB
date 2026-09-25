@@ -4,7 +4,7 @@ import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 export type LayerKey = "barrios" | "roads" | "trunk" | "community" | "stops" | "incidents";
 export const LAYER_LABEL: Record<LayerKey, string> = {
   barrios: "Barrios", roads: "Vías principales", trunk: "TransMilenio", community: "Rutas comunitarias",
-  stops: "Paraderos y estaciones", incidents: "Incidentes",
+  stops: "Estaciones", incidents: "Incidentes",
 };
 
 export function LayerToggle({ value, onChange }: { value: Record<LayerKey, boolean>; onChange: (v: Record<LayerKey, boolean>) => void }) {

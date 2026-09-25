@@ -35,7 +35,8 @@ CREATE TABLE IF NOT EXISTS stops (
   lng REAL NOT NULL,
   barrio_id TEXT,
   source_id TEXT NOT NULL REFERENCES sources(id),
-  source_ref TEXT
+  source_ref TEXT,
+  parent_id TEXT            -- estación padre GTFS (plataformas/vagones)
 );
 CREATE VIRTUAL TABLE IF NOT EXISTS stops_rtree USING rtree(rid, min_lng, max_lng, min_lat, max_lat);
 
@@ -43,7 +44,8 @@ CREATE TABLE IF NOT EXISTS patterns (
   id TEXT PRIMARY KEY,
   route_ref TEXT NOT NULL,
   name TEXT NOT NULL,
-  mode TEXT NOT NULL CHECK (mode IN ('troncal','provisional','zonal','transmicable','community')),
+  mode TEXT NOT NULL CHECK (mode IN ('troncal','provisional','zonal','alimentador','transmicable',
+                                     'community')),
   fare_class TEXT NOT NULL,
   fare REAL,
   service_start TEXT NOT NULL,

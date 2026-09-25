@@ -15,6 +15,7 @@ from backend.app.services.route_engine.engine import Place
 KIND_PRIORITY = {"landmark": 0, "station": 1, "barrio": 2, "stop": 3}
 MATCH_THRESHOLD = 0.78
 SAME_PLACE_M = 400
+SAME_AREA_M = 1500
 
 
 class Gazetteer:
@@ -102,6 +103,13 @@ class Gazetteer:
             return self.place_for(c), cands
         if len(exact) > 1 and len({(c["kind"], c["localidad"]) for c in exact}) == 1:
             return self.place_for(exact[0]), cands
+        if len(exact) > 1 and all(
+            haversine_m(a["lat"], a["lng"], b["lat"], b["lng"]) <= SAME_AREA_M
+            for a in exact for b in exact
+        ):
+            # mismo nombre, mismo sector (p. ej. estación e hito "Portal Tunal"): no es ambiguo
+            best = min(exact, key=lambda c: (KIND_PRIORITY[c["kind"]], c["display_name"]))
+            return self.place_for(best), cands
         return None, cands
 
     def place_for(self, c: dict) -> Place:

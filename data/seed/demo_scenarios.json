@@ -1,6 +1,6 @@
 {
-  "_comment": "Escenarios de demo (spec.md → Escenarios de Demo). P-12: con los datos MOCK, el primer bloqueo en el TransMiCable sube el Escenario A de 44 a 59 min sin cambiar la ruta; el segundo bloqueo (otro dispositivo) la descarta y se recomienda la comunitaria simulada + troncal (66 min). Recalibrar reports.partial.blockage en engine.yaml al cargar datos reales.",
-  "calibration": {"reports.partial.blockage.add_s": 900, "validated_with": "mock"},
+  "_comment": "Escenarios de demo (spec.md → Escenarios de Demo). P-12 validado con DATOS REALES (GTFS 2026-08-18): Escenario A = TransMiCable + troncal B27, 55 min; con 1 bloqueo en el tramo Mirador del Paraíso – Manitas sube a 70 min por la misma ruta; con el 2.º (otro dispositivo) cambia a zonal 624 + TransMiCable desde otra estación + B27, 81 min. Escenario F = alimentador 6-4 Paraíso → Portal Tunal, 48 min.",
+  "calibration": {"reports.partial.blockage.add_s": 900, "validated_with": "real (GTFS_20260818)"},
   "scenarios": [
     {"id": "A", "title": "Ruta normal", "origin": {"text": "Mirador del Paraíso"},
      "destination": {"text": "Av. Jiménez"}, "priority": "fast", "depart": "07:30"},

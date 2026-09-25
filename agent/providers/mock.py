@@ -100,10 +100,13 @@ def explain_template(f: dict) -> str:
         f"Te recomiendo tomar {names}, porque es {reason}: "
         f"{rec['total_time_min']} minutos y {_money(rec['cost'])}."
     ]
-    for b in f.get("blocked", []):
-        parts.append(
-            f"Evitamos {b['route_name']} porque {b['n_confirm']} personas reportaron un bloqueo."
-        )
+    used = {leg["route_name"] for leg in rides}
+    blocked = sorted(f.get("blocked", []), key=lambda b: (b["route_name"] not in used,
+                                                          b["route_name"]))
+    for b in blocked[:2]:
+        where = (f"el tramo {b['from_stop']} – {b['to_stop']} de {b['route_name']}"
+                 if b.get("from_stop") else b["route_name"])
+        parts.append(f"Evitamos {where} porque {b['n_confirm']} personas reportaron un bloqueo.")
     for leg in rides:
         for r in leg["reports"]:
             who = "1 persona reportó" if r["n_confirm"] == 1 else \

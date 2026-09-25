@@ -1,61 +1,85 @@
-# Mapeo de archivos crudos → ETL (P-03 / P-04).
-# Los nombres de archivo y de atributos corresponden a los datos MOCK generados por
-# `python -m backend.etl.mock_raw`. Cuando lleguen los archivos reales, ajustar aquí
-# `file` y los `*_field` sin tocar el código.
+# Mapeo de archivos crudos REALES → ETL (P-03 / P-04), revisado el 2026-09-24.
+# Para los datos simulados se usa sources.mock.yaml (automático con --mock).
+#
+# Decisiones de la revisión de datos (constitución v2.3.0):
+# - Las capas GeoJSON vienen recortadas a Ciudad Bolívar y vecinos; el GTFS es de toda Bogotá.
+# - CableAereo_CB.geojson (cables proyectados del POT) se EXCLUYE: no son servicios operativos.
+# - RutasProvisional_lnformales.geojson son rutas PROVISIONALES oficiales (RSPTRUTA=PROVISIONAL),
+#   no informales: fuente institucional, solo para el mapa (no están en el GTFS).
+# - Rutas_SITP.geojson no se usa: los recorridos SITP ya vienen en el GTFS (shapes.txt).
 
 localidad_ciudad_bolivar: "ciudad bolivar"   # valor normalizado (minúsculas, sin tildes)
 
-barrios:
-  file: BarriosCatastrales.geojson
-  id_field: CODIGO_BARRIO
-  name_field: NOMBRE_BARRIO
-  localidad_field: LOCALIDAD
-  source_name: Barrios catastrales de Bogotá
+barrios:                         # sectores catastrales
+  file: Sector_CB.geojson
+  id_field: SCACODIGO
+  name_field: SCANOMBRE
+  localidad_field: LocNombre
+  source_name: Sectores catastrales (Ciudad Bolívar y vecinos)
   kind: territorial
 
-tm_stations:
-  file: EstacionesTransmilenio.geojson
-  id_field: CODIGO_ESTACION
-  name_field: NOMBRE_ESTACION
-  cable_field: TIPO            # valores que contienen "cable" → transmicable
-  source_name: Estaciones TransMilenio
-  kind: institutional
+stations:
+  - file: EstacionesTrasmiCB.geojson
+    id_field: num_est
+    name_field: nom_est
+    fixed_kind: tm_station
+    merge_m: 80
+    source_id: src_tm_stations
+    source_name: Estaciones TransMilenio (troncal)
+    kind: institutional
+  - file: Estaciones_cable.geojson
+    id_field: cod_nodo
+    name_field: nom_est
+    fixed_kind: transmicable
+    merge_m: 80
+    source_id: src_cable_stations
+    source_name: Estaciones TransMiCable
+    kind: institutional
 
 sitp_stops:
-  file: ParaderosZonalesSITP.geojson
-  id_field: CODIGO_PARADERO
-  name_field: NOMBRE_PARADERO
+  file: ParaderosSITP_CB.geojson
+  id_field: cenefa
+  name_field: nombre_par
   source_name: Paraderos zonales SITP
   kind: institutional
 
 trunk_lines:
-  file: TrazadoTroncal.geojson
-  id_field: CODIGO_TRONCAL
-  name_field: NOMBRE_TRONCAL
+  file: TrazadoTroncal_CB.geojson
+  id_field: id_trazado
+  name_field: nom_traz
   source_name: Trazado troncal TransMilenio
   kind: institutional
 
 provisional_routes:
-  file: RutasProvisionales.geojson
-  code_field: CODIGO_RUTA      # se compara con route_short_name del GTFS
-  name_field: NOMBRE_RUTA
-  source_name: Rutas provisionales TransMilenio
+  file: RutasProvisional_lnformales.geojson
+  code_field: RSPCDEFINI       # ZP-xxx; no coinciden con el GTFS → solo visualización
+  name_field: RSPDENOMIN
+  source_name: Rutas provisionales SITP
   kind: institutional
 
 road_network:
-  file: MallaVialIntegrada.geojson
-  id_field: CODIGO_VIA
-  name_field: NOMBRE_VIA
-  hierarchy_field: JERARQUIA
-  main_values: ["arterial", "intermedia"]
-  source_name: Malla vial integrada de Bogotá
+  file: MallaVial_CB.geojson
+  id_field: MVICODIGO
+  name_field: MVIETIQUET
+  hierarchy_field: MVITIPO
+  main_values: ["AK", "AC"]    # avenidas carrera y calle
+  source_name: Malla vial integrada (Ciudad Bolívar)
   kind: institutional
 
 gtfs:
-  file: gtfs_bogota.zip
-  source_name: GTFS Bogotá
+  file: GTFS_20260818.zip
+  source_name: GTFS TransMilenio S.A. (feed 2026-08-18)
   kind: institutional
   cable_route_types: [5, 6, 7]
+  agency_modes:                # agency.txt del feed
+    "1": troncal               # Transmilenio-Troncal
+    "2": alimentador           # Transmilenio-Alimentadores
+    "3": zonal                 # Zonal-Urbano
+    "4": zonal                 # Zonal-Complementario
+    "5": zonal                 # Zonal-Especial
+    "6": troncal               # Transmilenio-Dual
+    "7": transmicable          # TransMiCable
+  service_day: monday          # patrones de un día hábil típico (calendar.txt)
   default_reliability: 0.85
   default_confidence: 0.95
   cable_reliability: 0.95

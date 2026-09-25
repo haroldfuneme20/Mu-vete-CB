@@ -7,6 +7,7 @@ aplicar incidentes → calcular score → devolver con evidencia. Sin LLM ni red
 from __future__ import annotations
 
 import hashlib
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -41,9 +42,15 @@ class Place:
                 "is_ciudad_bolivar": self.is_ciudad_bolivar}
 
 
+GeomLookup = Callable[[str, int, int], list[list[float]] | None]
+
+
 class RouteEngine:
-    def __init__(self, graph: Graph, cfg: dict, fares: dict):
+    def __init__(self, graph: Graph, cfg: dict, fares: dict, geom_lookup: GeomLookup | None = None):
+        """`geom_lookup(pattern_id, board_seq, alight_seq)` devuelve el trazado real del tramo
+        (shapes del GTFS). Si no se da o no hay trazado, se unen las paradas en línea recta."""
         self.g, self.cfg, self.fares = graph, cfg, fares
+        self.geom_lookup = geom_lookup
 
     # ------------------------------------------------------------------------------------
     def recommend(self, origin: Place, destination: Place, priority: str, depart_at: datetime,
@@ -94,7 +101,8 @@ class RouteEngine:
         for b in blocked:
             evidence.append({"kind": "report",
                              "label": f"{b['n_confirm']} personas reportaron un bloqueo en "
-                                      f"{b['route_name']}; se descartó esa opción",
+                                      f"{b['route_name']} entre {b['from_stop']} y "
+                                      f"{b['to_stop']}; se evita ese tramo",
                              "report_ids": b["report_ids"], "n_confirm": b["n_confirm"]})
         return {
             "blocked": blocked,
@@ -121,9 +129,12 @@ class RouteEngine:
                         p = self.g.patterns[r.pattern]
                         anons = ctx.by_segment[key]["blockage"]
                         ids = sorted({x for lst in anons.values() for x in lst})
+                        a = self.g.stops[p.stops[seq]].name
+                        b = self.g.stops[p.stops[seq + 1]].name
                         cur = out.get(p.name)
                         if cur is None or len(anons) > cur["n_confirm"]:
                             out[p.name] = {"route_name": p.name, "pattern_id": p.id,
+                                           "from_stop": a, "to_stop": b,
                                            "n_confirm": len(anons), "report_ids": ids}
         return [out[k] for k in sorted(out)]
 
@@ -135,6 +146,13 @@ class RouteEngine:
     def _stop_point(self, sid: str) -> list[float]:
         s = self.g.stops[sid]
         return [s.lng, s.lat]
+
+    def _ride_coords(self, pattern_id: str, part: raptor.Ride, seq_stops: list[str]) -> list:
+        if self.geom_lookup is not None:
+            coords = self.geom_lookup(pattern_id, part.board_seq, part.alight_seq)
+            if coords and len(coords) >= 2:
+                return coords
+        return [self._stop_point(x) for x in seq_stops]
 
     def _alternative(self, s: scoring.Scored, rank: int, origin: Place, dest: Place) -> dict:
         j: raptor.Journey = s.payload
@@ -171,8 +189,10 @@ class RouteEngine:
                 "confidence": p.confidence,
                 "last_updated": p.last_updated,
                 "reports": eff.reports,
+                "stop_points": [{"name": g.stops[x].name, "lat": g.stops[x].lat,
+                                 "lng": g.stops[x].lng} for x in seq_stops],
                 "geometry": {"type": "LineString",
-                             "coordinates": [self._stop_point(x) for x in seq_stops]},
+                             "coordinates": self._ride_coords(p.id, part, seq_stops)},
             })
             ride_i += 1
         last = g.stops[j.egress_stop]
@@ -194,7 +214,8 @@ class RouteEngine:
                 "to_stop": to, "stops": [frm, to], "duration_min": minutes(seconds),
                 "wait_min": 0, "cost": 0, "source_kind": "territorial", "source_id": None,
                 "source_name": "Cálculo de caminata", "confidence": 1.0, "last_updated": None,
-                "reports": [], "geometry": {"type": "LineString", "coordinates": coords}}
+                "reports": [], "stop_points": [],
+                "geometry": {"type": "LineString", "coordinates": coords}}
 
     def _evidence(self, alts: list[dict]) -> list[dict]:
         ev: dict[str, dict] = {}

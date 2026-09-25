@@ -18,11 +18,14 @@ def build(con: sqlite3.Connection, seed: Path) -> int:
         rows.append((normalize_name(name), name, "barrio", bid, lat, lng, loc))
 
     seen_station: set[str] = set()
-    for sid, name, kind, lat, lng, bid in con.execute(
-        "SELECT id, name, kind, lat, lng, barrio_id FROM stops ORDER BY id"
+    for sid, name, kind, lat, lng, bid, parent in con.execute(
+        "SELECT id, name, kind, lat, lng, barrio_id, parent_id FROM stops "
+        "ORDER BY parent_id IS NOT NULL, id"
     ):
         loc = loc_of_barrio.get(bid)
         if kind in ("tm_station", "transmicable"):
+            if parent:            # plataforma/vagón: la estación padre ya representa el lugar
+                continue
             label = f"{name} (TransMiCable)" if kind == "transmicable" else name
             key = normalize_name(label)
             if key in seen_station:

@@ -40,6 +40,9 @@ def build(raw: Path, seed: Path, db: Path, offline: Path | None, mock: bool,
 
         raw = raw / "mock" if raw.name != "mock" else raw
         generate(raw)
+        sources_cfg = sources_cfg or ETL_DIR / "sources.mock.yaml"
+        if (seed / "mock").is_dir():   # semillas con coordenadas del escenario mock
+            seed = seed / "mock"
     cfg = load_sources_config(sources_cfg)
     engine_cfg = yaml.safe_load((ROOT / "backend/config/engine.yaml").read_text(encoding="utf-8"))
 
@@ -57,6 +60,8 @@ def build(raw: Path, seed: Path, db: Path, offline: Path | None, mock: bool,
     stats["stops"] = load_stops.load(con, raw, cfg, mock)
     gtfs_info = load_gtfs.load(con, raw, cfg, engine_cfg, loaded_at)
     stats["patterns_gtfs"] = gtfs_info["patterns"]
+    stats["trips_used"] = gtfs_info.get("trips_used", 0)
+    stats["t_gtfs_s"] = round(time.time() - t0, 1)
     stats["patterns_community"] = load_community.load(con, seed)
     stats["display_lines"] = load_tm_lines.load(con, raw, cfg, mock)
     stats["segments"] = build_segments.build(con, gtfs_info)

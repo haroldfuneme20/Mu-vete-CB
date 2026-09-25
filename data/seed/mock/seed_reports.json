@@ -3,16 +3,16 @@
     "id": "5eed0001-0000-4000-8000-000000000001",
     "anon_id": "5eedaaaa-0000-4000-8000-000000000001",
     "category": "delay",
-    "location": {"lat": 4.55138, "lng": -74.14525},
-    "description": "Trancón en Lucero Medio (reporte simulado para la demo)",
+    "location": {"lat": 4.5930, "lng": -74.0900},
+    "description": "Trancón en Restrepo (reporte simulado para la demo)",
     "backup": false
   },
   {
     "id": "5eed0002-0000-4000-8000-000000000002",
     "anon_id": "5eedaaaa-0000-4000-8000-000000000002",
     "category": "blockage",
-    "location": {"lat": 4.55304, "lng": -74.14895},
-    "description": "Respaldo del Escenario B: primer bloqueo precargado entre Manitas y Juan Pablo II (simulado)",
+    "location": {"lat": 4.5631, "lng": -74.1476},
+    "description": "Respaldo del Escenario B: primer bloqueo precargado (simulado)",
     "backup": true
   }
 ]

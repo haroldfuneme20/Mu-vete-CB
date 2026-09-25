@@ -52,8 +52,10 @@ def compute(graph: Graph, j: Journey, depart_s: int, ctx: IncidentContext, cfg: 
             continue
         p = graph.patterns[part.pattern]
         t += part.wait_s
-        # costo con regla de transbordo integrado
-        if p.fare_class in INTEGRATED:
+        # costo con regla de transbordo integrado (el alimentador es gratis y no abre ventana)
+        if p.fare_class == "alimentador":
+            c = int(fares.get("alimentador", 0))
+        elif p.fare_class in INTEGRATED:
             if integrated_paid and first_integrated_t is not None and \
                     t - first_integrated_t <= window_s:
                 c = int(fares["integrated_transfer"]["extra"])

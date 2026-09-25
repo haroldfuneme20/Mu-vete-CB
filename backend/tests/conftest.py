@@ -138,6 +138,6 @@ def mock_db(tmp_path_factory) -> Path:
 
 
 def mock_client_for(mock_db: Path, tmp_path: Path, **over):
-    settings = make_settings(mock_db, tmp_path, ROOT / "data/seed", **over)
+    settings = make_settings(mock_db, tmp_path, ROOT / "data/seed/mock", **over)
     core = Core(settings, now=lambda: FIXED_NOW)
     return TestClient(create_app(settings, core=core)), core

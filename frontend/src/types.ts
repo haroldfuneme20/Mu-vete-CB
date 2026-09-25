@@ -30,7 +30,7 @@ export interface LegReport {
 }
 
 export interface Leg {
-  mode: "walk" | "troncal" | "provisional" | "zonal" | "transmicable" | "community";
+  mode: "walk" | "troncal" | "provisional" | "zonal" | "alimentador" | "transmicable" | "community";
   pattern_id: string | null;
   route_name: string;
   from_stop: string;
@@ -44,6 +44,7 @@ export interface Leg {
   confidence: number;
   last_updated: string | null;
   reports: LegReport[];
+  stop_points?: { name: string; lat: number; lng: number }[];
   geometry: { type: "LineString"; coordinates: [number, number][] };
 }
 

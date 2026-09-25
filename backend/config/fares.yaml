@@ -1,12 +1,16 @@
-# Tarifas en pesos colombianos. POR CONFIRMAR P-06: valores de referencia, no oficiales.
-tm_troncal: 3200       # POR CONFIRMAR P-06
-transmicable: 3200     # POR CONFIRMAR P-06
-sitp_zonal: 3200       # POR CONFIRMAR P-06
-provisional: 3200      # POR CONFIRMAR P-06
+# Tarifas en pesos colombianos (P-06).
+# Fuente: fare_attributes.txt del GTFS TransMilenio S.A. (feed 2026-08-18): 3.550 COP,
+# transfer_duration 7.500 s (125 min). El feed solo declara la tarifa de la agencia 7
+# (TransMiCable); se asume la misma tarifa integrada para troncal, SITP y provisionales.
+tm_troncal: 3550       # GTFS (asumida igual a TransMiCable) — POR CONFIRMAR P-06
+transmicable: 3550     # GTFS fare_attributes (agency 7)
+sitp_zonal: 3550       # POR CONFIRMAR P-06
+provisional: 3550      # POR CONFIRMAR P-06
+alimentador: 0         # los alimentadores no tienen costo
 integrated_transfer:
   # Tras pagar un servicio integrado (TM, TransMiCable, SITP), los siguientes transbordos
   # integrados dentro de la ventana pagan `extra`.
-  window_min: 110      # POR CONFIRMAR P-06
-  extra: 0             # POR CONFIRMAR P-06
+  window_min: 125      # GTFS transfer_duration 7500 s
+  extra: 0             # POR CONFIRMAR P-06 (valor del transbordo SITP↔TM)
 community:
   default: 2500        # tarifa declarada por defecto para rutas comunitarias simuladas

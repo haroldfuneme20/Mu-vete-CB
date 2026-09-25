@@ -1,0 +1,11 @@
+{
+  "_comment": "Escenarios de demo (spec.md → Escenarios de Demo). P-12: con los datos MOCK, el primer bloqueo en el TransMiCable sube el Escenario A de 44 a 59 min sin cambiar la ruta; el segundo bloqueo (otro dispositivo) la descarta y se recomienda la comunitaria simulada + troncal (66 min). Recalibrar reports.partial.blockage en engine.yaml al cargar datos reales.",
+  "calibration": {"reports.partial.blockage.add_s": 900, "validated_with": "mock"},
+  "scenarios": [
+    {"id": "A", "title": "Ruta normal", "origin": {"text": "Mirador del Paraíso"},
+     "destination": {"text": "Av. Jiménez"}, "priority": "fast", "depart": "07:30"},
+    {"id": "F", "title": "Accesibilidad", "origin": {"text": "Paraíso"},
+     "destination": {"text": "Portal Tunal"}, "priority": "reliable", "depart": "07:30",
+     "query": "Necesito ir del barrio Paraíso al Portal Tunal, lo más confiable"}
+  ]
+}

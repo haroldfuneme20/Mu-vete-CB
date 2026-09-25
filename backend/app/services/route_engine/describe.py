@@ -6,6 +6,7 @@ MODE_LABEL = {
     "troncal": "TransMilenio",
     "provisional": "la ruta provisional",
     "zonal": "el SITP zonal",
+    "alimentador": "el alimentador",
     "transmicable": "el TransMiCable",
     "community": "la ruta comunitaria",
     "walk": "a pie",

@@ -3,6 +3,7 @@ import MapIcon from "@mui/icons-material/Map";
 import { Alert, Button, List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { Legend } from "../components/Legend";
 import { RouteText } from "../components/RouteText";
 import { MapView } from "../map/MapView";
 import { useApp } from "../state/AppState";
@@ -10,7 +11,7 @@ import { useApp } from "../state/AppState";
 export function RouteDetail() {
   const { id } = useParams();
   const { rec } = useApp();
-  const [showMap, setShowMap] = useState(false);
+  const [showMap, setShowMap] = useState(true);
   const all = rec ? [rec.recommended, ...rec.alternatives] : [];
   const alt = all.find((a) => a.id === id);
   if (!rec || !alt) {
@@ -35,8 +36,8 @@ export function RouteDetail() {
       </Button>
       {showMap && (
         <div id="route-map">
-          <MapView label={`Mapa de la ruta de ${alt.total_time_min} minutos`} recommended={alt}
-            alternatives={all.filter((a) => a.id !== alt.id)} height={320} />
+          <MapView label={`Mapa de la ruta de ${alt.total_time_min} minutos`} route={alt} height={380} />
+          <Legend route={alt} />
           <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
             El recorrido completo está descrito en texto abajo.
           </Typography>

@@ -1,3 +1,4 @@
-# Archivos crudos grandes con Git LFS (research R-03)
-data/raw/**/*.zip filter=lfs diff=lfs merge=lfs -text
-data/raw/**/*.geojson filter=lfs diff=lfs merge=lfs -text
+# Sin Git LFS: los GeoJSON reales pesan < 20 MB y van directo en git; el GTFS (112 MB) se
+# publica como asset de un Release de GitHub y se descarga en el build (research R-03,
+# decisión de la revisión de datos 2026-09-24).
+*.geojson text eol=lf

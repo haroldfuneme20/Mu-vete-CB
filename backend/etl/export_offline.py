@@ -145,8 +145,17 @@ def export_level_c(db: Path, out: Path, seed: Path) -> list[dict]:
     fares = yaml.safe_load((CONFIG_DIR / "fares.yaml").read_text(encoding="utf-8"))
     con = sqlite3.connect(db)
     graph, gz = Graph.load(con), Gazetteer(con)
-    con.close()
-    agent = build_graph(AgentDeps(engine=RouteEngine(graph, cfg, fares), gazetteer=gz,
+
+    def geom_lookup(pattern_id: str, a: int, b: int):
+        coords: list = []
+        for (g,) in con.execute("SELECT geom FROM segments WHERE pattern_id = ? AND seq >= ? "
+                                "AND seq < ? ORDER BY seq", (pattern_id, a, b)):
+            pts = [[round(x, 6), round(y, 6)] for x, y in wkb.loads(g).simplify(0.00003).coords]
+            coords.extend(pts[1:] if coords else pts)
+        return coords or None
+
+    engine = RouteEngine(graph, cfg, fares, geom_lookup=geom_lookup)
+    agent = build_graph(AgentDeps(engine=engine, gazetteer=gz,
                                   active_reports=list, llm=build_provider("mock"),
                                   now=lambda: datetime(2026, 9, 24, 7, 30, tzinfo=BOGOTA)))
     results = []
@@ -170,6 +179,7 @@ def export_level_c(db: Path, out: Path, seed: Path) -> list[dict]:
                     "data_mode": r["data_mode"], "precomputed": True,
                 },
             })
+    con.close()
     _write(out, "demo_scenarios.json", {"scenarios": spec["scenarios"], "results": results})
     return [{"path": "demo_scenarios.json", "level": "c"}]
 

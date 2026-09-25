@@ -35,7 +35,8 @@ def build_facts(result: dict, priority: str) -> dict:
         "is_fastest": rec["total_time_min"] <= min(a["total_time_min"] for a in alts),
         "is_cheapest": rec["cost"] <= min(a["cost"] for a in alts),
         "is_most_reliable": rec["reliability"] >= max(a["reliability"] for a in alts),
-        "blocked": [{"route_name": b["route_name"], "n_confirm": b["n_confirm"]}
+        "blocked": [{"route_name": b["route_name"], "n_confirm": b["n_confirm"],
+                     "from_stop": b.get("from_stop"), "to_stop": b.get("to_stop")}
                     for b in result.get("blocked", [])],
     }
 

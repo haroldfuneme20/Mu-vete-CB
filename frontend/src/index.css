@@ -26,3 +26,8 @@ html {
 .leaflet-container {
   font-size: 1rem;
 }
+
+/* Fondo OSM atenuado (libre): menos color para que la ruta y las marcas resalten */
+.basemap-muted {
+  filter: grayscale(0.85) brightness(1.06) contrast(0.92);
+}

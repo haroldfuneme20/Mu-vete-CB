@@ -4,6 +4,7 @@ import { Alert, Button, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { announce } from "../a11y/announce";
 import { MapView } from "../map/MapView";
+import { useApp } from "../state/AppState";
 
 interface Props {
   value: { lat: number; lng: number } | null;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export function LocationPicker({ value, onChange }: Props) {
+  const { rec } = useApp();
   const [error, setError] = useState<string | null>(null);
   const useGps = () => {
     setError(null);
@@ -34,9 +36,12 @@ export function LocationPicker({ value, onChange }: Props) {
         <Button variant="outlined" startIcon={<MyLocationIcon aria-hidden />} onClick={useGps}>
           Usar mi ubicación actual
         </Button>
-        <Typography variant="body2" color="text.secondary">O toca el mapa para marcar el lugar.</Typography>
-        <MapView height={240} label="Mapa para marcar la ubicación del reporte" picked={value}
-          layers={{ barrios: true, roads: true, trunk: true, community: true, stops: true, incidents: false }}
+        <Typography variant="body2" color="text.secondary">
+          O toca el mapa para marcar el lugar{rec ? " (se muestra tu ruta para ubicar el problema)" : ""}.
+        </Typography>
+        <MapView height={260} label="Mapa para marcar la ubicación del reporte" picked={value}
+          route={rec?.recommended ?? null}
+          layers={{ barrios: true, roads: false, trunk: true, community: true, stops: true, incidents: false }}
           onPick={(lat, lng) => {
             onChange({ lat, lng });
             announce("Ubicación marcada en el mapa.");

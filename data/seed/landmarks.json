@@ -1,6 +1,11 @@
 [
   {"id": "lm_av_jimenez", "name": "Av. Jiménez", "aliases": ["Avenida Jiménez", "Jiménez", "Centro", "el centro"],
-   "lat": 4.6018, "lng": -74.0762, "localidad": "Santa Fe"},
+   "lat": 4.60279, "lng": -74.08050, "localidad": "Santa Fe",
+   "source": "GTFS TransMilenio: estación padre 9110 'Avenida Jiménez'"},
   {"id": "lm_portal_tunal", "name": "Portal Tunal", "aliases": ["Portal del Tunal", "el Tunal"],
-   "lat": 4.5768, "lng": -74.1303, "localidad": "Tunjuelito"}
+   "lat": 4.57091, "lng": -74.13957, "localidad": "Tunjuelito",
+   "source": "GTFS TransMilenio: estación padre 8000 'Portal Tunal'"},
+  {"id": "lm_el_paraiso", "name": "Barrio El Paraíso", "aliases": ["Paraíso", "El Paraíso", "Paraiso"],
+   "lat": 4.54913, "lng": -74.16411, "localidad": "Ciudad Bolívar",
+   "source": "GTFS TransMilenio: paradero 52093 'Br. El Paraíso' (Ciudad Bolívar)"}
 ]

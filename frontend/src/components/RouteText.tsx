@@ -5,7 +5,7 @@ import { SourceBadge } from "./SourceBadge";
 
 const MODE: Record<string, string> = {
   walk: "Caminata", troncal: "TransMilenio", provisional: "Ruta provisional", zonal: "SITP zonal",
-  transmicable: "TransMiCable", community: "Ruta comunitaria",
+  alimentador: "Alimentador (gratis)", transmicable: "TransMiCable", community: "Ruta comunitaria",
 };
 
 export function RouteText({ alt }: { alt: Alternative }) {

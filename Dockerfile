@@ -12,6 +12,14 @@ COPY agent agent
 COPY data/raw data/raw
 COPY data/seed data/seed
 ARG DATA_MODE=real
+# El GTFS (112 MB) no cabe en git: se descarga del asset de un Release de GitHub (R-03).
+ARG GTFS_URL=""
+ARG GTFS_FILE=GTFS_20260818.zip
+RUN if [ "$DATA_MODE" = "real" ] && [ ! -f "data/raw/$GTFS_FILE" ]; then \
+      if [ -z "$GTFS_URL" ]; then echo "Falta data/raw/$GTFS_FILE: define GTFS_URL" >&2; exit 1; fi; \
+      python -c "import sys, urllib.request; urllib.request.urlretrieve(sys.argv[1], sys.argv[2])" \
+        "$GTFS_URL" "data/raw/$GTFS_FILE"; \
+    fi
 RUN if [ "$DATA_MODE" = "mock" ]; then MOCK=--mock; else MOCK=; fi && \
     python -m backend.etl.build $MOCK --raw data/raw --seed data/seed \
       --db /out/muevete.db --offline /out/offline

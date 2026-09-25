@@ -1,0 +1,64 @@
+# Mapeo para los datos MOCK de `python -m backend.etl.mock_raw` (tests y demo sin datos).
+# `python -m backend.etl.build --mock` usa este archivo automáticamente.
+
+localidad_ciudad_bolivar: "ciudad bolivar"
+
+barrios:
+  file: BarriosCatastrales.geojson
+  id_field: CODIGO_BARRIO
+  name_field: NOMBRE_BARRIO
+  localidad_field: LOCALIDAD
+  source_name: Barrios catastrales de Bogotá
+  kind: territorial
+
+stations:
+  - file: EstacionesTransmilenio.geojson
+    id_field: CODIGO_ESTACION
+    name_field: NOMBRE_ESTACION
+    cable_field: TIPO            # valores que contienen "cable" → transmicable
+    source_id: src_tm_stations
+    source_name: Estaciones TransMilenio
+    kind: institutional
+
+sitp_stops:
+  file: ParaderosZonalesSITP.geojson
+  id_field: CODIGO_PARADERO
+  name_field: NOMBRE_PARADERO
+  source_name: Paraderos zonales SITP
+  kind: institutional
+
+trunk_lines:
+  file: TrazadoTroncal.geojson
+  id_field: CODIGO_TRONCAL
+  name_field: NOMBRE_TRONCAL
+  source_name: Trazado troncal TransMilenio
+  kind: institutional
+
+provisional_routes:
+  file: RutasProvisionales.geojson
+  code_field: CODIGO_RUTA      # se compara con route_short_name del GTFS
+  name_field: NOMBRE_RUTA
+  source_name: Rutas provisionales TransMilenio
+  kind: institutional
+
+road_network:
+  file: MallaVialIntegrada.geojson
+  id_field: CODIGO_VIA
+  name_field: NOMBRE_VIA
+  hierarchy_field: JERARQUIA
+  main_values: ["arterial", "intermedia"]
+  source_name: Malla vial integrada de Bogotá
+  kind: institutional
+
+gtfs:
+  file: gtfs_bogota.zip
+  source_name: GTFS Bogotá
+  kind: institutional
+  cable_route_types: [5, 6, 7]
+  agency_modes: {}             # sin agencias: el modo se infiere por tipo de ruta y paradas
+  service_day: null            # sin calendar.txt: se usan todos los viajes
+  default_reliability: 0.85
+  default_confidence: 0.95
+  cable_reliability: 0.95
+  default_service: ["04:30", "23:00"]
+  max_trips_per_pattern: 50

@@ -14,8 +14,8 @@ import type { PlaceItem, Priority, RecommendationRequest } from "../types";
 
 export function Home() {
   const nav = useNavigate();
-  const { setRec, online } = useApp();
-  const [tab, setTab] = useState(online ? 1 : 0);
+  const { setRec } = useApp();
+  const [tab, setTab] = useState(0); // 0 = Formulario (por defecto), 1 = Pregunta con tus palabras
   const [origin, setOrigin] = useState<PlaceItem | null>(null);
   const [dest, setDest] = useState<PlaceItem | null>(null);
   const [priority, setPriority] = useState<Priority>("balanced");
